@@ -5,17 +5,22 @@ from django.db import models
 
 class Contragent(models.Model):
     created = models.DateTimeField(u'добавлено', auto_now_add=True)
-    name = models.TextField(u'наименование')
-    phone = models.CharField(u'телефон', max_length=255)
-    email = models.CharField(u'email', max_length=255)
-    address = models.TextField(u'адрес')
-    comment = models.TextField(u'описание')
+    name = models.CharField(u'наименование', max_length=255)
+    phone = models.CharField(u'телефон', max_length=255, null=True, blank=True)
+    email = models.CharField(u'email', max_length=255, null=True, blank=True)
+    address = models.TextField(u'адрес', null=True, blank=True)
+    comment = models.TextField(u'описание', null=True, blank=True)
 
     class Meta:
         abstract = True
 
 
 class Client(Contragent):
+    ctype = models.CharField(
+        u'тип', max_length=255,
+        choices=((u'legal', u'юрлицо'), (u'personal', u'физлицо')),
+        default=u'personal'
+    )
     class Meta:
         verbose_name = u'клиент'
         verbose_name_plural = u'клиенты'
@@ -82,11 +87,16 @@ class Document(models.Model):
     deadline = models.DateTimeField(
         u'срок исполнения', null=True, blank=True)
     status = models.CharField(
-        u'статус', max_length=255, choices=((u'accepted', u'принято'),
-                                            (u'payed', u'оплачено')))
+        u'статус', max_length=255,
+        choices=((u'new', u'новый'),
+                 (u'accepted', u'принято'), (u'payed', u'оплачено')),
+        default=u'new'
+    )
     payment_type = models.CharField(
-        u'расчет', max_length=255, choices=((u'cash', u'наличный'),
-                                            (u'', u'безналичный')))
+        u'расчет', max_length=255,
+        choices=((u'cash', u'наличный'), (u'non-cash', u'безналичный')),
+        default=u'cash'
+    )
     language = models.ForeignKey(
         Language, verbose_name=u'язык', null=True, blank=True)
     document_type = models.ForeignKey(

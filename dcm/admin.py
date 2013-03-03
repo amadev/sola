@@ -4,7 +4,21 @@ from django.contrib import admin
 
 
 class DocumentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['__unicode__', 'date', 'client', 'cost']
+    radio_fields = {'status': admin.HORIZONTAL,
+                    'payment_type': admin.HORIZONTAL}
+
+    list_filter = (
+        'date',
+        'status',
+        'payment_type',
+        'language',
+        'document_type',
+        'traslator',
+        'notary'
+    )
+
+    search_fields = ('comment', 'client__name')
 
 
 class DocumentTypeAdmin(admin.ModelAdmin):
@@ -12,7 +26,8 @@ class DocumentTypeAdmin(admin.ModelAdmin):
 
 
 class ClientAdmin(admin.ModelAdmin):
-    pass
+    radio_fields = {'ctype': admin.HORIZONTAL}
+    fields = ['ctype', 'name', 'phone', 'email', 'address', 'comment']
 
 
 class TranslatorAdmin(admin.ModelAdmin):
