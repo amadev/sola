@@ -1,6 +1,7 @@
 SELF_DIR=$(shell pwd)
 UWSGI_PID=/tmp/sola-master.pid
 VIRT=$(HOME)/.virtualenvs/sola
+PYTHON=$(VIRT)/bin/python
 
 uwsgi-restart: uwsgi-stop sleep uwsgi-start
 
@@ -28,3 +29,9 @@ uwsgi-stop:
 
 sleep:
 	sleep 1
+
+start:
+	$(PYTHON) manage.py runserver
+
+sync:
+	$(PYTHON) manage.py syncdb
