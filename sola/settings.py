@@ -1,6 +1,7 @@
 # Django settings for sola project.
 import os
 import json
+import platform
 
 
 def cur(*args):
@@ -161,3 +162,9 @@ LOGGING = {
         },
     }
 }
+
+HOSTNAME = platform.node().replace('.', '_').replace('-', '_')
+try:
+    exec "from sola.settings_%s import *" % HOSTNAME
+except ImportError, e:
+    pass
