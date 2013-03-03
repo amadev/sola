@@ -72,8 +72,9 @@ class DocumentType(models.Model):
 
 class Document(models.Model):
     created = models.DateTimeField(u'добавлено', auto_now_add=True)
-    date = models.DateField(u'день', default=datetime.date.today())
+    date = models.DateField(u'дата', default=datetime.date.today())
     client = models.ForeignKey(Client, verbose_name=u'клиент')
+    comment = models.TextField(u'описание', null=True, blank=True)
     traslator = models.ForeignKey(
         Translator, verbose_name=u'переводчик', null=True, blank=True)
     notary = models.ForeignKey(
@@ -90,7 +91,7 @@ class Document(models.Model):
     status = models.CharField(
         u'статус', max_length=255,
         choices=((u'new', u'новый'),
-                 (u'accepted', u'принято'), (u'payed', u'оплачено')),
+                 (u'accepted', u'получено'), (u'payed', u'оплачено')),
         default=u'new'
     )
     payment_type = models.CharField(
@@ -102,7 +103,6 @@ class Document(models.Model):
         Language, verbose_name=u'язык', null=True, blank=True)
     document_type = models.ForeignKey(
         DocumentType, verbose_name=u'тип', null=True, blank=True)
-    comment = models.TextField(u'описание', null=True, blank=True)
 
     user = models.ForeignKey(
         User, verbose_name=u'пользователь', editable=False)
