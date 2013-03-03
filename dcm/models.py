@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Contragent(models.Model):
@@ -102,6 +103,9 @@ class Document(models.Model):
     document_type = models.ForeignKey(
         DocumentType, verbose_name=u'тип', null=True, blank=True)
     comment = models.TextField(u'описание', null=True, blank=True)
+
+    user = models.ForeignKey(
+        User, verbose_name=u'пользователь', editable=False)
 
     class Meta:
         verbose_name = u'документ'

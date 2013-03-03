@@ -19,6 +19,13 @@ class DocumentAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('comment', 'client__name')
+    readonly_fields = ('user',)
+
+    def save_model(self, request, obj, form, change):
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        return instance
 
 
 class DocumentTypeAdmin(admin.ModelAdmin):
